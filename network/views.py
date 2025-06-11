@@ -14,13 +14,15 @@ def index(request):
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = request.user
+            post.user = request.user
             post.save()
             return redirect("index")
     else:
         form = PostForm()
+    posts = Post.objects.order_by('-timestamp')
     return render(request, "network/index.html", {
-        "form": form
+        "form": form,
+        "posts": posts
     })
 
 
